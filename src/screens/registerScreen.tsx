@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, ImageBackground } from 'react-native';
+import { View, ImageBackground, Image } from 'react-native';
 import { Button, Snackbar, Text, TextInput } from 'react-native-paper';
 import { styles } from '../themes/styles';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
@@ -74,6 +74,10 @@ export const RegisterScreen = () => {
             style={styles.backgroundImage}
         >
             <View style={styles.root}>
+                <Image 
+                    source={require('../images/logo.png')} 
+                    style={styles.logo}
+                />
                 <Text style={styles.textHead}>Regístrate</Text>
                 <TextInput
                     mode='outlined'

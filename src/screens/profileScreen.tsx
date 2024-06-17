@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View } from "react-native";
+import { View , ImageBackground} from "react-native";
 import { Text, TextInput, Button } from "react-native-paper";
 import { styles } from "../themes/styles";
 import firebase, { updateProfile } from "firebase/auth";
@@ -32,15 +32,20 @@ export const ProfileScreen = () => {
 
   const handlerUpdateUser = async () => {
     await updateProfile(userAuth!, {
-      displayName: formUser.name
+      displayName: formUser.name,
+      //phoneNumber: formUser.phone
     })
+    console.log(userAuth)
   };
 
   return (
-    <View>
-      <Text variant="bodyLarge">Bienvenido</Text>
-      <Text variant="labelLarge">{userAuth?.displayName}</Text>
-      <Text variant="labelLarge">{userAuth?.phoneNumber}</Text>
+    <ImageBackground 
+      source={require('../images/fondo4.jpg')} 
+      style={styles.backgroundImage}>
+      <View>
+      <Text style={styles.text} variant="bodyLarge">Bienvenido</Text>
+      <Text style={styles.secondaryText} variant="labelLarge">{userAuth?.displayName}</Text>
+      <Text style={styles.secondaryText} variant="labelLarge">{userAuth?.phoneNumber}</Text>
       <Text style={styles.text}>Actualizar datos</Text>
       <Text style={styles.secondaryText}>Nombre</Text>
       <TextInput
@@ -62,5 +67,7 @@ export const ProfileScreen = () => {
         Actualizar
       </Button>
     </View>
+    </ImageBackground>
+    
   );
 };

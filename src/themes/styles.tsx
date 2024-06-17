@@ -13,11 +13,13 @@ export const styles = StyleSheet.create({
     },
     text:{
         fontSize:25,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        color: '#FFFFFF'
     },
     secondaryText:{
         fontSize:20,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        color: '#FFFFFF'
     },
     button:{
         width: '90%',
@@ -35,7 +37,7 @@ export const styles = StyleSheet.create({
         marginTop: 20,
         fontSize: 17,
         fontWeight: 'bold',
-        color: '#000000'
+        color: '#FFFFFF'
     },
 
     backgroundImage: {
@@ -43,5 +45,10 @@ export const styles = StyleSheet.create({
         resizeMode: 'cover',
         justifyContent: 'center',
     },
+    logo: {
+        width: 300,
+        height: 100,
+        marginBottom: 20,
+    }
 
 })
