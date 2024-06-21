@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { SafeAreaView, StyleSheet, View } from "react-native";
+import { SafeAreaView, StyleSheet, View, Modal} from "react-native";
+import { Button,Text, TextInput } from 'react-native-paper';
 import { PanGestureHandler } from "react-native-gesture-handler";
 import { Colors } from "../themes/colors";
 import { Direction, Coordinate, GestureEventType } from "../types/types";
@@ -10,6 +11,8 @@ import Food from "./Food";
 import Header from "./Header";
 import Score from "./Score";
 import Snake from "./Snake";
+import { getAuth } from "firebase/auth";
+import { getDatabase, ref, push, set } from "firebase/database"; // Importar set
 
 const SNAKE_INITIAL_POSITION = [{ x: 5, y: 5 }];
 const FOOD_INITIAL_POSITION = { x: 5, y: 20 };
@@ -24,6 +27,9 @@ export default function Game(): JSX.Element {
   const [score, setScore] = useState<number>(0);
   const [isGameOver, setIsGameOver] = useState<boolean>(false);
   const [isPaused, setIsPaused] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const auth = getAuth();
+  const user = auth.currentUser;
 
   useEffect(() => {
     if (!isGameOver) {
@@ -31,6 +37,8 @@ export default function Game(): JSX.Element {
         !isPaused && moveSnake();
       }, MOVE_INTERVAL);
       return () => clearInterval(intervalId);
+    } else {
+      setShowModal(true);
     }
   }, [snake, isGameOver, isPaused]);
 
@@ -94,13 +102,28 @@ export default function Game(): JSX.Element {
     setScore(0);
     setDirection(Direction.Right);
     setIsPaused(false);
+    setShowModal(false);
   };
 
   const pauseGame = () => {
     setIsPaused(!isPaused);
   };
 
-  // console.log(JSON.stringify(snake, null, 0));
+  const registerScore = () => {
+    const db = getDatabase();
+    const scoresRef = ref(db, 'scores');
+    const newScoreRef = push(scoresRef);
+    set(newScoreRef, {
+      email: user?.email,
+      name: user?.displayName,
+      score: score,
+    }).then(() => {
+      setShowModal(false);
+      reloadGame();
+    }).catch((error) => {
+      console.error("Error saving score: ", error);
+    });
+  };
 
   return (
     <PanGestureHandler onGestureEvent={handleGesture}>
@@ -116,6 +139,19 @@ export default function Game(): JSX.Element {
           <Snake snake={snake} />
           <Food x={food.x} y={food.y} />
         </View>
+        <Modal visible={showModal} transparent={true} animationType="slide">
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <Text style={styles.modalTitle}>Registrar Puntaje</Text>
+              <Text style={styles.modalText}>Correo: {user?.email}</Text>
+              <Text style={styles.modalText}>Nombre: {user?.displayName}</Text>
+              <Text style={styles.modalText}>Puntaje: {score}</Text>
+              <Button mode="contained" onPress={registerScore}>
+                Registrar
+              </Button>
+            </View>
+          </View>
+        </Modal>
       </SafeAreaView>
     </PanGestureHandler>
   );
@@ -133,5 +169,26 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
     backgroundColor: Colors.background,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+  modalContent: {
+    width: '80%',
+    padding: 20,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  modalTitle: {
+    fontSize: 24,
+    marginBottom: 15,
+  },
+  modalText: {
+    fontSize: 18,
+    marginBottom: 10,
   },
 });

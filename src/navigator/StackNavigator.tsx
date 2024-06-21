@@ -33,12 +33,12 @@ export const StackNavigator = () => {
 
     useEffect(() => {
         setIsLoading(true);
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                setIsAuth(true);
-            }
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            setIsAuth(!!user);
             setIsLoading(false);
         });
+
+        return () => unsubscribe();
     }, []);
 
     return (

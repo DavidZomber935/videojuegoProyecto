@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { HomeScreen } from "../screens/homeScreen";
 import { ProfileScreen } from "../screens/profileScreen";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { ScoreScreen } from "../screens/scoreScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -22,6 +23,16 @@ export const BottomTabNavigator = () => {
           tabBarLabel: "Home", 
           tabBarIcon: ({ color, size }) => (
             <Icon name="home" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Puntajes"
+        component={ScoreScreen}
+        options={{ 
+          tabBarLabel: "Puntajes",
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="format-list-bulleted" size={size} color={color} />
           ),
         }}
       />

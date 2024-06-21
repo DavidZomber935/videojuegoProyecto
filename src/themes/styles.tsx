@@ -49,6 +49,23 @@ export const styles = StyleSheet.create({
         width: 300,
         height: 100,
         marginBottom: 20,
-    }
+    },
+    container: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        backgroundColor: 'rgba(255, 255, 255, 0.8)',
+        padding: 10,
+        marginVertical: 5,
+        borderRadius: 10,
+      },
+      scoreItem: {
+        padding: 15,
+        borderBottomWidth: 1,
+        borderBottomColor: '#ccc',
+      },
+      scoreText: {
+        fontSize: 18,
+      },
 
 })

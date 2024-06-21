@@ -1,9 +1,11 @@
 import { initializeApp } from "firebase/app";
 import {getAuth} from 'firebase/auth';
+import { getDatabase } from "firebase/database";
 
 const firebaseConfig = {
     apiKey: "AIzaSyA5dihH02zE6dmG0QS8zRA7e2qb-3nBL50",
     authDomain: "videojuegoproyecto-e4711.firebaseapp.com",
+    databaseURL: "https://videojuegoproyecto-e4711-default-rtdb.firebaseio.com",
     projectId: "videojuegoproyecto-e4711",
     storageBucket: "videojuegoproyecto-e4711.appspot.com",
     messagingSenderId: "1087906488652",
@@ -13,3 +15,4 @@ const firebaseConfig = {
 const firebase = initializeApp(firebaseConfig);
 
 export const auth = getAuth(firebase);
+export const dbRealTime = getDatabase(firebase);
